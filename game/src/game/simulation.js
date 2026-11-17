@@ -5,7 +5,7 @@ import { CLOCK_RATE } from '../core/config.js';
 import { tapped, mouse } from '../core/input.js';
 import { clamp } from '../core/math.js';
 import { districtAt } from '../city/layout.js';
-import { cam, followCamera, screenToWorld } from '../render/camera.js';
+import { followCamera, screenToWorld } from '../render/camera.js';
 import { updateParticles } from '../render/particles.js';
 import { updatePlayer, enterableVehicle } from '../characters/player.js';
 import { updatePeople } from '../characters/pedestrians.js';
@@ -78,7 +78,8 @@ function followPlayer(G, dt) {
   let zoom = 1.75;
   let aimX = 0;
   let aimY = 0;
-  if (v) zoom = 1.42 - 0.42 * clamp(Math.abs(v.speed) / 520, 0, 1);
+  // The camera itself widens the view with speed, so a car only asks for its standing zoom.
+  if (v) zoom = 1.42;
   else {
     const [mx, my] = screenToWorld(mouse.x, mouse.y);
     const armed = p.weapon !== 'fists';
@@ -86,8 +87,7 @@ function followPlayer(G, dt) {
     aimY = clamp((my - p.y) * (armed ? 0.3 : 0.12), -80, 80);
   }
   if (G.dialogue) zoom *= 1.2;
-  followCamera(dt, { x: p.x, y: p.y, vx: p.vx, vy: p.vy, zoom, aimX, aimY });
-  if (!G.settings.shake) cam.shake = 0;
+  followCamera(dt, { x: p.x, y: p.y, vx: p.vx, vy: p.vy, zoom, aimX, aimY, shake: G.settings.shake ? 1 : 0 });
 }
 
 function continuousSounds(G) {

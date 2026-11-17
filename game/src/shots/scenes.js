@@ -1,6 +1,8 @@
 // Staged scenes for the screenshots (?shot=name): each puts the real game into a telling
 // moment (a five-car police chase, a walk on the boardwalk, a firefight on the quay, the title
 // screen), lets the simulation run for a moment, and leaves the frame to be captured.
+// Each scene's `cam` is the world point at the exact centre of the frame (an offset from the
+// player when `track` is set) and the zoom; the camera re-centres itself when the window resizes.
 import { QUAY_Y0 } from '../city/layout.js';
 import { MISSIONS, missionById } from '../missions/story.js';
 import { jumpToStep } from '../missions/director.js';
@@ -110,7 +112,7 @@ export const SCENES = {
     notify(G, 'Air unit Skylark is overhead.', '#ff8a5c', '★');
     G.subtitle = { who: 'vex', text: 'That is MY car, Okoro!', t: 1, life: 99 };
     G.zoneName.t = 9;
-    return { cam: [70, -8, 1.56], track: true, steps: 34, keys: ['KeyW', 'Space'], aim: [2700, 1700] };
+    return { cam: [70, 17, 1.56], track: true, steps: 34, keys: ['KeyW', 'Space'], aim: [2700, 1700] };
   },
 
   /** On foot on the Coral Strand boardwalk at midday: pedestrians, traffic, a taxi to take, a hidden pelican. */
@@ -143,7 +145,7 @@ export const SCENES = {
     notify(G, 'Golden pelican 2 of 20', '#ffd23f', '✦');
     notify(G, 'Juno Tide has work for you at Tidewater Records.', '#ff7ad9', 'J');
     G.zoneName = { text: 'Coral Strand', sub: 'Pastel hotels and the boardwalk', color: '#ff8fb3', t: 0.6 };
-    return { cam: [770, 1640, 1.75], steps: 30, keys: [], aim: [900, 1700] };
+    return { cam: [770, 1662, 1.75], steps: 30, keys: [], aim: [900, 1700] };
   },
 
   /** Mission "Harbor Lights": a night firefight with the Neon Eels on the Port Calypso quay. */
@@ -173,7 +175,7 @@ export const SCENES = {
     setHeat(G, 2);
     pursuer(G, 'interceptor', 3020, QUAY_Y0 - 30, 0.1, 120);
     G.subtitle = { who: 'mako', text: 'The ledger is under crane three. Do not shoot the ledger!', t: 1, life: 99 };
-    return { cam: [3205, QUAY_Y0 + 46, 1.62], steps: 46, keys: [], aim: [3250, QUAY_Y0 + 70], fire: true };
+    return { cam: [3205, QUAY_Y0 + 70, 1.62], steps: 46, keys: [], aim: [3250, QUAY_Y0 + 70], fire: true };
   },
 
   /** The start screen over the city at dusk. */
@@ -187,7 +189,7 @@ export const SCENES = {
     carAt(G, 'tortuga', 1290, 1687, Math.PI, 150, '#36c9e0', 0);
     carAt(G, 'harborbus', 1130, 1661, Math.PI, 120, '#ff8fb3', 0);
     carAt(G, 'brava', 863, 1560, -Math.PI / 2, 140, '#ff7a45', 0);
-    return { cam: [1010, 1660, 1.12], steps: 60, title: true, saveInfo: 'Saved game  ·  Mission 4: Bad Reception  ·  $2,350  ·  Day 3' };
+    return { cam: [1010, 1695, 1.12], steps: 60, title: true, saveInfo: 'Saved game  ·  Mission 4: Bad Reception  ·  $2,350  ·  Day 3' };
   },
 
   /** Not a submitted screenshot: the first moments of a new game outside the motel. */
