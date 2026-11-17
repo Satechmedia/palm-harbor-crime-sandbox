@@ -22,8 +22,8 @@ export const CLOCK_RATE = 1 / 60;
 export const SAVE_KEY = 'palmharbor.heatwave.save.v1';
 export const SETTINGS_KEY = 'palmharbor.heatwave.settings.v1';
 
-export const MAX_TRAFFIC = 20;
-export const MAX_PEDESTRIANS = 34;
+export const MAX_TRAFFIC = 26;
+export const MAX_PEDESTRIANS = 46;
 /** Vehicles and pedestrians outside this radius of the camera are recycled. */
 export const DESPAWN_RADIUS = 1500;
 

@@ -1,11 +1,12 @@
 // Palm Harbor: Heatwave. The entry point: builds the city, wires the systems together, runs
 // the fixed-step loop and switches between the title screen, play, pause, shops and the
 // hospital. ?shot=name stages a screenshot scene; ?selftest=1 plays the game by itself.
+// The story comes first: it reaches every system it puts into the world (people, vehicles, police, gangs).
+import { MISSIONS } from './missions/story.js';
 import { STEP } from './core/config.js';
 import { bindInput, endInputFrame, tapped, mouse, pressKey } from './core/input.js';
 import { createGame, notify, say } from './game/state.js';
 import { stepGame, stepAmbient, gatherMarkers, gatherPrompts } from './game/simulation.js';
-import { MISSIONS } from './missions/story.js';
 import { missionInterrupted } from './missions/director.js';
 import { reportCrime } from './crime/wanted.js';
 import { createPlayer, respawnPlayer } from './characters/player.js';
@@ -117,7 +118,7 @@ const hooks = {
 
 function showTitle() {
   const data = readSave();
-  hooks.saveInfo = data ? describeSave(data) : null;
+  hooks.saveInfo = data ? `Saved game  ·  ${describeSave(data)}` : null;
   G.mode = 'title';
   G.clock = 18.6;
   G.menu = { screen: 'title', page: 'main', sel: 0, sub: 0, t: 0 };

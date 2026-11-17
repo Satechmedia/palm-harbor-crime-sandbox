@@ -11,6 +11,7 @@ import { drawBuildingShadows } from './shadows.js';
 import { drawVehicle, drawVehicleShadow } from './vehicles.js';
 import { drawPerson, drawPersonShadow } from './people.js';
 import { drawParticles, drawFloaters } from './particles.js';
+import { drawCloudShadows, drawGulls } from './ambient.js';
 import { drawGroundMarkers, drawPickups, drawMarkerBeacons, drawTrafficSignals } from './markers.js';
 
 function drawHelicopter(ctx, h) {
@@ -110,7 +111,8 @@ export function drawWorld(ctx, G, markers, quality = 1) {
   beginLights();
   const view = viewRect(40);
   setPlane(ctx, 0);
-  drawGround(ctx, view, G.frame, G.shot ? 999 : 3);
+  // Tiles a little beyond the screen are painted ahead of time, one a frame, so driving never hitches.
+  drawGround(ctx, G.shot ? view : viewRect(300), G.frame, G.shot ? 999 : 1);
   drawWater(ctx, view, G.time, G.city);
   const big = viewRect(360);
   const buildings = G.city.buildings.filter((b) => b.x < big.x1 && b.x + b.w > big.x0 && b.y < big.y1 && b.y + b.h > big.y0);
@@ -135,6 +137,7 @@ export function drawWorld(ctx, G, markers, quality = 1) {
   for (const v of vehicles) drawVehicleShadow(ctx, v);
   for (const p of people) drawPersonShadow(ctx, p);
   if (!player.vehicle) drawPersonShadow(ctx, player);
+  drawCloudShadows(ctx, G.time, view);
   if (G.helicopter) {
     const h = G.helicopter;
     ctx.globalAlpha = 0.5;
@@ -173,6 +176,7 @@ export function drawWorld(ctx, G, markers, quality = 1) {
   }
   drawParticles(ctx, G, true);
   drawPlayerHalo(ctx, G);
+  drawGulls(ctx, G.time);
   if (G.helicopter) drawHelicopter(ctx, G.helicopter);
   applyLighting(ctx, quality);
   drawMarkerBeacons(ctx, G, markers);

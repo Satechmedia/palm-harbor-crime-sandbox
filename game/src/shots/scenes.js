@@ -20,14 +20,14 @@ function clearArea(G, x, y, r) {
 }
 
 /** A car already at speed, with no one deciding where it goes for the moment of the picture. */
-function carAt(G, model, x, y, angle, speed, paint) {
+function carAt(G, model, x, y, angle, speed, paint, panic = 9) {
   clearArea(G, x, y, 50);
   const v = createVehicle(G, model, x, y, angle, paint);
   v.vx = Math.cos(angle) * speed;
   v.vy = Math.sin(angle) * speed;
   v.speed = speed;
   v.driver = 'ai';
-  v.ai = { type: 'traffic', cruise: speed, panicT: 9, waitT: 0, len: 9999, line: { sx: x, sy: y, dx: Math.cos(angle), dy: Math.sin(angle), ex: x + Math.cos(angle) * 9999, ey: y + Math.sin(angle) * 9999 }, seg: G.city.roads.segs[0], dir: 1, lane: 0 };
+  v.ai = { type: 'traffic', cruise: speed, panicT: panic, waitT: 0, len: 9999, line: { sx: x, sy: y, dx: Math.cos(angle), dy: Math.sin(angle), ex: x + Math.cos(angle) * 9999, ey: y + Math.sin(angle) * 9999 }, seg: G.city.roads.segs[0], dir: 1, lane: 0 };
   return v;
 }
 
@@ -126,6 +126,10 @@ export const SCENES = {
     populateTraffic(G, 20);
     populatePedestrians(G, 60);
     clearArea(G, 812, 1600, 60);
+    carAt(G, 'marlin', 837, 1470, Math.PI / 2, 150, '#e2374d', 0);
+    carAt(G, 'pico', 863, 1790, -Math.PI / 2, 140, '#36c9e0', 0);
+    carAt(G, 'harborbus', 889, 1545, -Math.PI / 2, 110, '#ff8fb3', 0);
+    carAt(G, 'tortuga', 1010, 1713, 0, 130, '#f4f1e8', 0);
     const cab = createVehicle(G, 'solcab', 813, 1650, Math.PI / 2);
     cab.parked = true;
     G.pelicans[0] = { x: 742, y: 1640, id: 0 };
@@ -178,7 +182,12 @@ export const SCENES = {
     G.mode = 'title';
     populateTraffic(G, 24);
     populatePedestrians(G, 50);
-    return { cam: [1010, 1660, 1.12], steps: 60, title: true, saveInfo: 'Mission 4: Bad Reception  ·  $2,350  ·  Day 3' };
+    carAt(G, 'marlin', 1010, 1713, 0, 160, '#e2374d', 0);
+    carAt(G, 'solcab', 1190, 1739, 0, 150, null, 0);
+    carAt(G, 'tortuga', 1290, 1687, Math.PI, 150, '#36c9e0', 0);
+    carAt(G, 'harborbus', 1130, 1661, Math.PI, 120, '#ff8fb3', 0);
+    carAt(G, 'brava', 863, 1560, -Math.PI / 2, 140, '#ff7a45', 0);
+    return { cam: [1010, 1660, 1.12], steps: 60, title: true, saveInfo: 'Saved game  ·  Mission 4: Bad Reception  ·  $2,350  ·  Day 3' };
   },
 
   /** Not a submitted screenshot: the first moments of a new game outside the motel. */
